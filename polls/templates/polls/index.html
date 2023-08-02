@@ -1,3 +1,9 @@
+{% extends "polls/base.html" %}
+
+{% block title %}Página Inicial{% endblock title %}
+
+{%block content%}
+
 {% if latest_question_list %}
     <ul>
     {% for question in latest_question_list %}
@@ -7,3 +13,4 @@
 {% else %}
     <p>Sem enquentes disponíveis.</p>
 {% endif %}
+{%endblock content%}
