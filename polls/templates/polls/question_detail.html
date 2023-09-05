@@ -7,5 +7,9 @@
 
     <p>Data da publicação: {{ question.pub_date }} </p>
 
+    <ul>
+        <li><a href="{% url 'question-list' %}">Listar Enquetes</a></li>
+        <li><a href="{% url 'question-delete' question.pk %}">Deletar Enquete</a></li>
+    </ul>
 {% endblock content %}
 
