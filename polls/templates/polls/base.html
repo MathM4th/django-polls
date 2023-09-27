@@ -11,13 +11,35 @@
 
 </head>
 <body>
-    <header>
-        <h1>Cabeçalho</h1>
-        <img src="{% static 'polls/img/traumatizadas.jpg' %}">
-    </header>
+    <div class='container'>
+        <header>
+            <div class='row'>
+                <div class='col'>
+                    <h1>Cabeçalho</h1>
+                    <ul>
+                        {% if user.is_authenticated %}
+                        <li> {{ user.username }} / <a href="{% url 'logout' %}"> Sair</li>
+                        {% else %}
+                        <li> <a href="{% url 'signup' %}"> Cadastrar</li>
+                        <li> <a href="{% url 'login' %}"> Acessar</li>
+                        {% endif%}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class='row'>
+                    <img src="{% static 'polls/img/traumatizadas.jpg' %}">
+                </div>
+
+        </header>
     <main>
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+
         {% block content%}{% endblock content %}
     </main>
+
     <footer>
         <h1>Rodapé</h1>
     </footer>

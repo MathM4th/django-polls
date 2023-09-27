@@ -2,6 +2,9 @@ from ast import Delete
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from .models import Question
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 def index(request):
     latest_question_list = Question.objects.order_by("-pub_date")[:5]
@@ -21,7 +24,7 @@ def results(request, question_id):
 def vote(request, question_id):
     return HttpResponse("Você está votando em uma enquete %s." % question_id)
 
-from django.views.generic import CreateView, ListView, DetailView, DeleteView
+from django.views.generic import CreateView, ListView, DetailView, DeleteView, UpdateView
 from django.urls import reverse_lazy
 
 class QuestionCreateView(CreateView):
@@ -49,3 +52,12 @@ class QuestionListView(ListView):
     context_object_name = 'questions'
     ordering = ['-pub_date']
     paginate_by = 5
+
+class QuestionUpdateView(UpdateView):
+    model = Question
+    success_url = reverse_lazy('question-list')
+    fiels = ('question_text',)
+
+@login_required
+def sobre(request):
+    return HttpResponse('Este é um app de enquete!')
