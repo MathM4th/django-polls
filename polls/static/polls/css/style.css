@@ -1,3 +1,9 @@
 body{
-    background-color: rgba(255, 255, 183, 0.904);
+    background-color: rgb(212, 193, 168);
+    text-align: center;
+}
+
+.banner{
+    height: 50%;
+    width: 50%;
 }

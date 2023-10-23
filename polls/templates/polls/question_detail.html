@@ -6,7 +6,7 @@
     <p> {{ question.question_text }} </p>
 
     <p>Data da publicação: {{ question.pub_date }} </p>
-
+    <p>{{ question.desc }}</p>
     <ul>
         <li><a href="{% url 'question-list' %}">Listar Enquetes</a></li>
         <li><a href="{% url 'question-delete' question.pk %}">Deletar Enquete</a></li>

@@ -6,6 +6,10 @@
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
+    </form>
+    <form method="desc">
+        {% csrf_token %}
+        {{ form.as_p }}
         <input type="submit">
     </form>
 {% endblock content %}

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}App de Enquetes{% endblock %}</title>
+    <title>{% block title %}App de Doações{% endblock %}</title>
 
     <link rel="stylesheet" href="{% static 'polls/css/style.css' %}">
 
@@ -20,15 +20,15 @@
                         {% if user.is_authenticated %}
                         <li> {{ user.username }} / <a href="{% url 'logout' %}"> Sair</li>
                         {% else %}
-                        <li> <a href="{% url 'signup' %}"> Cadastrar</li>
-                        <li> <a href="{% url 'login' %}"> Acessar</li>
+                        <li> <a href="{% url 'signup' %}"> Cadastrar </a></li>
+                        <li> <a href="{% url 'login' %}"> Acessar </a></li>
                         {% endif%}
                         </ul>
                     </div>
                 </div>
 
                 <div class='row'>
-                    <img src="{% static 'polls/img/traumatizadas.jpg' %}">
+                    <img src="{% static 'polls/img/traumatizadas.jpg' %}" class="banner">
                 </div>
 
         </header>

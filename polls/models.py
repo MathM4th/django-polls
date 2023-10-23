@@ -46,12 +46,16 @@ from django.utils import timezone
 class Question(models.Model):
     question_text = models.CharField(max_length=300)
     pub_date = models.DateTimeField("date published", default=timezone.now)
+    desc = models.CharField(max_length=500)
 
     def was_published_recently(self):
         return self.pub_date >=timezone.now() - datetime.timedelta(days=1)
 
     def __str__(self):
         return self.question_text
+
+    def __str__(self):
+        return self.desc
 
 
 class Choice(models.Model):
