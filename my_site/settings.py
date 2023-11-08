@@ -131,3 +131,6 @@ LOGIN_REDIRECT_URL = '/enquetes/listar'
 LOGOUT_REDIRECT_URL = '/enquetes/listar'
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'files/')

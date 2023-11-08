@@ -17,12 +17,12 @@
                 <div class='col'>
                     <h1>Cabeçalho</h1>
                     <ul>
-                        {% if user.is_authenticated %}
-                        <li> {{ user.username }} / <a href="{% url 'logout' %}"> Sair</li>
+                        {% if not user.is_authenticated %}
+                            <a class="p-2 text-dark" href="{% url 'signup' %}">Cadastrar</a>
+                            <a class="p-2 text-dark" href="{% url 'login' %}">Acessar</a>
                         {% else %}
-                        <li> <a href="{% url 'signup' %}"> Cadastrar </a></li>
-                        <li> <a href="{% url 'login' %}"> Acessar </a></li>
-                        {% endif%}
+                            <a class="p-2 text-dark" href="{% url 'logout' %}">Sair</a>
+                        {% endif %}
                         </ul>
                     </div>
                 </div>
