@@ -1,19 +1,19 @@
-from django.shortcuts import render, get_object_or_404
-
-# Create your views here.
-from django.views.generic.edit import CreateView
-from django.urls import reverse_lazy
-from django.contrib.auth.hashers import make_password
 from django.contrib import messages
-
 from django.contrib.auth import get_user_model
-
+from django.contrib.auth.hashers import make_password
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse_lazy
+# Create your views here.
+from django.views.generic.edit import CreateView, UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from polls.views import QuestionCreateView
+
 User = get_user_model() # obtém o model padrão para usuários do Django
 
-from django.contrib import messages # importa o form de registro
+from django.contrib import messages  # importa o form de registro
 
 from accounts.forms import AccountSignupForm
+
 
 class AccountCreateView(CreateView):
     model = User # conecta o model a view
@@ -29,5 +29,22 @@ class AccountCreateView(CreateView):
         messages.success(self.request, self.success_message)
         return super(AccountCreateView, self).form_valid(form)
 
+class AccountUpdateView(LoginRequiredMixin, UpdateView):
+    model = User
+    template_name = 'accounts/user_form.html'
+    fields = ('first_name', 'email', 'imagem', )
+    success_url = reverse_lazy('polls_all')
+    success_message = 'Perfil atualizado com sucesso!'
 
+    def get_queryset(self):
+        user_id = self.kwargs.get('pk')
+        user = self.request.user
+        if user is None or not user.is_authenticated or user_id != user.id:
+            return User.objects.none()
+
+        return User.objects.filter(id=user.id)
+
+    def form_valid(self, form):
+        messages.success(self.request, self.success_message)
+        return super(AccountUpdateView, self).form_valid(form)
 
