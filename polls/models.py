@@ -38,6 +38,9 @@
 from ast import Import
 from time import timezone
 from django.db import models
+
+from django.contrib.auth import get_user_model
+User = get_user_model()
 import datetime 
 from django.utils import timezone
 
@@ -47,6 +50,12 @@ class Question(models.Model):
     question_text = models.CharField(max_length=300)
     pub_date = models.DateTimeField("date published", default=timezone.now)
     desc = models.CharField(max_length=500)
+    author = models.ForeignKey(
+        User, # chave estrangeira vinculada ao usuário
+        editable=False, #não permite editar
+        on_delete=models.DO_NOTHING, #não exclui a pergunta se o autor for removido
+        null=True #permite autor NULL para não conflitar com registros já existentes
+    )
 
     def was_published_recently(self):
         return self.pub_date >=timezone.now() - datetime.timedelta(days=1)

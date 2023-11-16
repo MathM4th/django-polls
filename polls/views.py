@@ -35,11 +35,23 @@ from django.urls import reverse_lazy
 from django.forms.models import BaseModelForm
 from django.shortcuts import render, get_object_or_404
 
-class QuestionCreateView(CreateView):
+class QuestionCreateView(LoginRequiredMixin, CreateView):
     model = Question
-    fields = ('question_text',)
+    fields = ('question_text', 'pub_date', )
     success_url = reverse_lazy('index')
     template_name = 'polls/question_form.html'
+    success_message = 'Pergunta criada com sucesso!'
+
+    def get_context_data(self, **kwargs):
+        context = super(QuestionCreateView, self).get_context_data(**kwargs)
+        context['form_title'] = 'Criando uma pergunta'
+
+        return context
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        messages.success(self.request, self.success_message)
+        return super(QuestionCreateView, self).form_valid(form)
 
 class QuestionListView(ListView):
     model = Question
