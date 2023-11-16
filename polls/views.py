@@ -106,10 +106,10 @@ class ChoiceUpdateView(UpdateView):
 class ChoiceDeleteView(LoginRequiredMixin, DeleteView):
     model = choice
     template_name: 'polls/choice_confirm_delete_form.html'
-    sucess_message = 'Alternativa excluída com sucesso!'
+    success_message = 'Alternativa excluída com sucesso!'
 
     def form_valid(self, request, *args, **kwargs):
-        messages.sucess(self.request, self.sucess_message)
+        messages.success(self.request, self.success_message)
         return super(ChoiceDeleteView, self).form_valid(request, *args, **kwargs)
 
     def get_success_url(self, *args, **kwargs):
