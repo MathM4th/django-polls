@@ -14,11 +14,12 @@
             </form>
         </div>
     </div>
+    {% if object %}
     <div class="mt-5">
         <h3>Alternativas da Pergunta</h3>
-    <a href="{% url 'choice_add' pk=object.id %}" class="btn btn-primary mb-5">
-        + Incluir Alternativa
-    </a>
+        <a href="{% url 'choice_add' pk=object.id %}" class="btn btn-primary mb-5">
+            + Incluir Alternativa
+        </a>
     <ul>
     {% for choice in question_choices %}
     <li>
@@ -35,6 +36,7 @@
 {% endfor %}
     </ul>
     </div>
+    {% endif %}
     <form method="desc">
         {% csrf_token %}
         {{ form.as_p }}

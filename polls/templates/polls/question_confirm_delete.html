@@ -15,3 +15,16 @@
         <li> <a href="{% url 'question-list' %}"> Voltar para lista das enquetes </a> </li>
     </ul>
 {% endblock content %}
+
+class ChoiceDeleteView(LoginRequiredMixin, DeleteView):
+    model = Choice
+    template_name = 'polls/choice_confirm_delete_form.html'
+    success_message = 'Alternativa excluída com sucesso!'
+
+    def form_valid(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(ChoiceDeleteView, self).form_valid(request, *args, **kwargs)
+
+    def get_success_url(self, *args, **kwargs):
+        question_id = self.object.question.id
+        return reverse_lazy('poll_edit, kwargs={'pk': question_id})

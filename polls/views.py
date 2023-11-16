@@ -97,9 +97,9 @@ class QuestionUpdateView(UpdateView):
 class ChoiceUpdateView(UpdateView):
     model = Question
     template_name: 'polls/choice_form.html'
-    success_url = reverse_lazy('question-list')
-    fiels = ('question_text',)
-    success_message = 'Enquete atualizada com sucesso.'
+    success_url = reverse_lazy('choice-list')
+    fields = ('choice_text',)
+    success_message = 'Alternativa atualizada com sucesso.'
 
     def get_context_data(self, **kwargs):
         context = super(ChoiceUpdateView, self).get_context_data(**kwargs)
@@ -116,7 +116,7 @@ class ChoiceUpdateView(UpdateView):
         return reverse_lazy('poll_edit', kwargs={'pk': question_id})
 
 class ChoiceDeleteView(LoginRequiredMixin, DeleteView):
-    model = choice
+    model = Choice
     template_name: 'polls/choice_confirm_delete_form.html'
     success_message = 'Alternativa excluída com sucesso!'
 
@@ -134,7 +134,7 @@ class ChoiceDeleteView(LoginRequiredMixin, DeleteView):
 class ChoiceCreateView(CreateView):
     model = Choice
     template_name: 'polls/choice_form.html'
-    fields: ('choice_text',)
+    fields: ('choice_text')
     success_message = 'Alternativa registrada com sucesso!'
 
     def dispatch(self, request, *args, **kwargs):
