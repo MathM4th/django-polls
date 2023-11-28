@@ -1,12 +1,21 @@
-class ChoiceDeleteView(LoginRequiredMixin, DeleteView):
-    model = choice
-    template_name: 'polls/choice_confirm_delete_form.html'
-    success_message = 'Alternativa excluída com sucesso!'
+{% extends '_layout1.html' %}
 
-    def form_valid(self, request, *args, **kwargs):
-        messages.success(self.request, self.success_message)
-        return super(ChoiceDeleteView, self).form_valid(request, *args, **kwargs)
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Excluindo a Alternativa Nº {{ object.id }}</h5>
+    </div>
+    <div class="card-body">
 
-    def get_success_url(self, *args, **kwargs):
-        question_id = self.object.question.id
-        return reverse_lazy('poll_edit', kwargs={'pk': question_id})
+        <form method="post">
+            {% csrf_token %}
+            <h6>Você tem certeza que deseja excluir a alternativa abaixo ?</h6>
+            <br />
+            <p>"{{ object.choice_text }}"</p>
+            <br />
+            <button type="submit" class="btn btn-danger">Confirmar</button>
+            <a href="{% url 'poll_edit' pk=object.question.id %}" class="link-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
