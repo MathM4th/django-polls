@@ -3,6 +3,7 @@ from email import message
 from msilib import CreateRecord
 from multiprocessing import context
 from secrets import choice
+from typing import Any
 from django.shortcuts import  render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.contrib import messages
@@ -70,7 +71,15 @@ class QuestionListView(ListView):
 
 class QuestionDetailView(DetailView):
     model = Question
+    template_name = 'polls/question_detail.html'
     context_object_name = 'question'
+
+    def get_context_data(self, **kwargs):
+        context = super(QuestionDetailView, self).get_context_data(**kwargs)
+        votes = Choice.objects.filter(question=context['question']).aggregate(total=Sum('votes')) or 0
+        context['total_votes'] = votes.get('total')
+
+        return context
 
 class QuestionDeleteView(DeleteView):
     model: Question
