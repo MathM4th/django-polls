@@ -14,6 +14,9 @@ from django.contrib import messages  # importa o form de registro
 
 from accounts.forms import AccountSignupForm
 
+from django.views.generic import TemplateView
+from polls.models import Question
+
 
 class AccountCreateView(CreateView):
     model = User # conecta o model a view
@@ -48,3 +51,13 @@ class AccountUpdateView(LoginRequiredMixin, UpdateView):
         messages.success(self.request, self.success_message)
         return super(AccountUpdateView, self).form_valid(form)
 
+class AccountTemplateView(LoginRequiredMixin, TemplateView):
+    template_name = 'accounts/user_detail.html'
+    context_object_name = 'user'
+    
+    def get_context_data(self, **kwargs):
+        context = super(AccountTemplateView, self).get_context_data(**kwargs)
+        voted = QuestionUser.objects.filter(user=self.request.user)
+        context['questions_voted'] = voted
+ 
+        return context
