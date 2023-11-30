@@ -4,6 +4,10 @@ from msilib import CreateRecord
 from multiprocessing import context
 from secrets import choice
 from typing import Any
+from django.forms.models import BaseModelForm
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from django.views.generic import DetailView, ListView, TemplateView
 from django.shortcuts import  render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.contrib import messages
