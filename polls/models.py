@@ -38,6 +38,7 @@
 from ast import Import
 from time import timezone
 from django.db import models
+from django.core.exceptions import ValidationError
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -94,3 +95,7 @@ class Usuario(models.Model):
 class Doacao(models.Model):
     valor = models.DecimalField("Valor da doação", max_digits=10, decimal_places=2)
     confirmacao = models.BooleanField("Pagamento confirmado?", default=False)
+
+class QuestionUser(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)

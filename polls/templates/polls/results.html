@@ -20,5 +20,5 @@
         </li>
         {% endfor %}
     </ul>
-    <a href="{% url 'poll_show' pk=question.id %}">Votar novamente?</a>
+    <a href="{% url 'question-detail' pk=question.id %}">Votar novamente?</a>
 {% endblock %}

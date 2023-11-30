@@ -17,15 +17,19 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Choice, Question
 from django.db.models import Sum
+from django.core.exceptions import ValidationError
+
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 def index(request):
     latest_question_list = Question.objects.order_by("-pub_date")[:5]
     context = {"latest_question_list": latest_question_list}
     return render(request, "polls/index.html", context)
 
-def detail(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    return render(request, "polls/detail.html", {"question": question})
+#def detail(request, question_id):
+   # question = get_object_or_404(Question, pk=question_id)
+   # return render(request, "polls/detail.html", {"question": question})
 
 
 def results(request, question_id):
@@ -61,7 +65,7 @@ class QuestionCreateView(LoginRequiredMixin, CreateView):
 
 class QuestionListView(ListView):
     model = Question
-    template_name: 'polls/question_detail.html'
+    #template_name: 'polls/question_detail.html'
     context_object_name = 'question'
     ordering = ['-pub_date']
     paginate_by: 5
@@ -75,7 +79,7 @@ class QuestionListView(ListView):
 
 class QuestionDetailView(DetailView):
     model = Question
-    template_name = 'polls/question_detail.html'
+    #template_name = 'polls/question_detail.html'
     context_object_name = 'question'
 
     def get_context_data(self, **kwargs):
@@ -86,8 +90,8 @@ class QuestionDetailView(DetailView):
         return context
 
 class QuestionDeleteView(DeleteView):
-    model: Question
-    success_url: reverse_lazy("question-list")
+    model = Question
+    success_url = reverse_lazy("question-list")
 
 class QuestionListView(ListView):
     model = Question
@@ -97,17 +101,17 @@ class QuestionListView(ListView):
 
 class QuestionUpdateView(UpdateView):
     model = Question
-    template_name: 'polls/question_form.html'
+    template_name = 'polls/question_form.html'
+    fields = ('question_text', 'pub_date', )
     success_url = reverse_lazy('question-list')
-    fiels = ('question_text',)
-    success_message = 'Enquete atualizada com sucesso.'
+    success_message = 'Pergunta atualizada com sucesso!'
 
     def get_context_data(self, **kwargs):
-        context = super(QuestionCreateView, self).get_context_data(**kwargs)
+        context = super(QuestionUpdateView, self).get_context_data(**kwargs)
         context['form_title'] = 'Editando a pergunta'
 
         question_id = self.kwargs.get('pk')
-        choices = Choice.objects.filter(question__pk=question_id)
+        choices = Choice.objects.filter(question_id=question_id)
         context['question_choices'] = choices
 
         return context
@@ -139,7 +143,7 @@ class ChoiceUpdateView(UpdateView):
 
 class ChoiceDeleteView(LoginRequiredMixin, DeleteView):
     model = Choice
-    template_name: 'polls/choice_confirm_delete_form.html'
+    template_name = 'polls/choice_confirm_delete_form.html'
     success_message = 'Alternativa excluída com sucesso!'
 
     def form_valid(self, request, *args, **kwargs):
@@ -148,15 +152,15 @@ class ChoiceDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self, *args, **kwargs):
         question_id = self.object.question.id
-        return reverse_lazy('poll_edit', kwargs={'pk': question_id})
+        return reverse_lazy('question-edit', kwargs={'pk': question_id})
     
 
 
 
 class ChoiceCreateView(CreateView):
     model = Choice
-    template_name: 'polls/choice_form.html'
-    fields: ('choice_text')
+    template_name = 'polls/choice_form.html'
+    fields = ('choice_text',)
     success_message = 'Alternativa registrada com sucesso!'
 
     def dispatch(self, request, *args, **kwargs):
@@ -173,12 +177,12 @@ class ChoiceCreateView(CreateView):
 
     def form_valid(self, form):
         form.instance.question = self.question
-        messages.sucess(self.request, self.success_message)
+        messages.success(self.request, self.success_message)
         return super(ChoiceCreateView, self).form_valid(form)
 
     def get_success_url(self, *args, **kwargs):
         question_id = self.kwargs.get('pk')
-        return reverse_lazy('poll_edit', kwargs={'pk': question_id})
+        return reverse_lazy('question-update', kwargs={'pk': question_id})
         
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
