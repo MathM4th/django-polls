@@ -29,7 +29,7 @@
             <input type="submit" value="Votar">
         {% endif %}
     </form>
-    <p>{{ question.desc }}</p>
+    <p>{{ question.text }}</p>
     <ul>
         <li><a href="{% url 'question-list' %}">Listar Enquetes</a></li>
         <li><a href="{% url 'question-delete' question.pk %}">Deletar Enquete</a></li>

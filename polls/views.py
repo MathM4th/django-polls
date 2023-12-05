@@ -143,7 +143,7 @@ class ChoiceUpdateView(UpdateView):
 
 class ChoiceDeleteView(LoginRequiredMixin, DeleteView):
     model = Choice
-    template_name = 'polls/choice_confirm_delete_form.html'
+    template_name = 'polls/choice_confirm_delete.html'
     success_message = 'Alternativa excluída com sucesso!'
 
     def form_valid(self, request, *args, **kwargs):
@@ -152,7 +152,7 @@ class ChoiceDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self, *args, **kwargs):
         question_id = self.object.question.id
-        return reverse_lazy('question-edit', kwargs={'pk': question_id})
+        return reverse_lazy('question-update', kwargs={'pk': question_id})
     
 
 

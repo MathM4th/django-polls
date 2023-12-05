@@ -50,7 +50,6 @@ from django.utils import timezone
 class Question(models.Model):
     question_text = models.CharField(max_length=300)
     pub_date = models.DateTimeField("date published", default=timezone.now)
-    desc = models.CharField(max_length=500)
     author = models.ForeignKey(
         User, # chave estrangeira vinculada ao usuário
         editable=False, #não permite editar
